@@ -21,7 +21,7 @@ const getParty = async (req, res) => {
     
         })
         .then(party => {
-            logging.LOG(__filename, 21, "Party " + party)
+            logging.LOG("Party " + party)
             
             if (party !== null) {
                 res.status(200).send(party);

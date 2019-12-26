@@ -21,7 +21,7 @@ const getCandidate = async (req, res) => {
     
         })
         .then(candidate => {
-            logging.LOG(__filename, 21, "Candidate " + candidate)
+            logging.LOG("Candidate " + candidate)
             
             if (candidate !== null) {
                 res.status(200).send(candidate);

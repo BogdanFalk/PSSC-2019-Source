@@ -23,7 +23,7 @@ const getEvent = async (req, res) => {
 
         }).then(event => {
             let flag = false;
-            logging.LOG(__filename, 37, "Event " + event)
+            logging.LOG(event)
             if (event !== null) {
                 res.status(200).send(event);
             } else {
@@ -127,7 +127,7 @@ const getEventWithAssociates = async (req, res) => {
                             ]
 
                         }).then(event => {
-                            logging.LOG(__filename, 37, "Event " + event)
+                            logging.LOG( "Event " + event)
                             if (event !== null) {
 
                                 res.status(200).send(event);
@@ -156,7 +156,7 @@ const getEventWithAssociates = async (req, res) => {
                             ]
 
                         }).then(event => {
-                            logging.LOG(__filename, 37, "Event " + event)
+                            logging.LOG( "Event " + event)
                             if (event !== null) {
 
                                 res.status(200).send(event);
@@ -185,7 +185,7 @@ const getEventWithAssociates = async (req, res) => {
                             ]
 
                         }).then(event => {
-                            logging.LOG(__filename, 37, "Event " + event)
+                            logging.LOG( "Event " + event)
                             if (event !== null) {
 
                                 res.status(200).send(event);

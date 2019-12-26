@@ -36,13 +36,15 @@ app.use((req, res, next) => {
 sequelize.sync({ force: true,  logging: false } ) // { force: true } - To reset DB insert this inside the parenthesis
   .then(() => {
     app.listen(process.env.PORT || 5000, () => {
-      logging.LOG(__filename, 40,`Server listening on port ${PORT}`)
+      logging.LOG(__filename, 39,`Server listening on port ${PORT}`)
     })
   })
 
 
 logging.GOD(`Voting is up ma dude, on Port:${PORT}`)
 logging.testLogging()
+
+serverMQTT.connect()
 
 app.use(express.json());
 app.use(serveStatic(__dirname + "/Frontend/dist"));

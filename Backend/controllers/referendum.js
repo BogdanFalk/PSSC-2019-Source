@@ -21,7 +21,7 @@ const getReferendum = async (req, res) => {
     
         })
         .then(referendum => {
-            logging.LOG(__filename, 21, "Referendum " + referendum)
+            logging.LOG("Referendum " + referendum)
             
             if (referendum !== null) {
                 res.status(200).send(referendum);
