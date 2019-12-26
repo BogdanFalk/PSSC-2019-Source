@@ -1,6 +1,7 @@
 <template>
-  <v-container fluid  fill-height ma-0 pa-0 :style="{'background-image':'url('+require('../assets/main-bk-full-hd.png')+')'}" class="main-container-background" >
-    <v-row fluid align="center" justify="space-between" no-gutters="true">
+  <v-container fluid  fill-height ma-0 pa-0 :style="{'background-image':'url('+require('../assets/main-bk2.jpg')+')'}" class="main-container-background" >
+    <v-row fluid align="start" justify="space-around"></v-row>
+    <v-row fluid align="center" justify="space-between" :no-gutters=positive>
       <v-col  cols="auto" >
         <v-card  class="">
           <v-navigation-drawer permanent>
@@ -29,7 +30,7 @@
       </v-col>
       <v-col   cols="auto">
         <v-card color="rgb(255, 255, 255, 0.5)" min-width="740">
-          <v-card-title class="pa-11 justify-center">Need a place to rest?</v-card-title>
+          <v-card-title class="pa-11 justify-center"><h2 class="v-card-title-text">Need a place to rest?</h2></v-card-title>
         </v-card>
       </v-col>
       <v-col   cols="auto">
@@ -66,6 +67,7 @@
 export default {
   data() {
     return {
+      positive: true,
       items: [
         { title: "Dashboard", icon: "mdi-view-dashboard" },
         { title: "Photos", icon: "mdi-image" },
@@ -77,8 +79,18 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Satisfy&display=swap');
+
 .main-container-background{
    
     background-size:cover;
+    background-position-y: -120px;
+    scroll-behavior: smooth;
+    
 }
+
+.v-card-title-text{
+  font-family: 'Satisfy', cursive;
+}
+
 </style>

@@ -52,10 +52,10 @@ print (bcolors.OKGREEN + "Deploy to Heroku!" + bcolors.ENDC)
 # else:
 #     print (bcolors.HEADER + "No new updates on frontend" + bcolors.ENDC)    
 
-# print (bcolors.OKBLUE + "Build Frontend" + bcolors.ENDC)
-#     # os.system("")
-# os.system("cd Frontend && npm run build")
-# os.system("cd ..")
+print (bcolors.OKBLUE + "Build Frontend" + bcolors.ENDC)
+    # os.system("")
+os.system("cd Frontend && npm run build")
+os.system("cd ..")
 
 
 
