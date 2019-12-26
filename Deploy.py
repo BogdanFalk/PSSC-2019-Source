@@ -26,8 +26,8 @@ class bcolors:
 
 print (bcolors.OKGREEN + "Deploy to Heroku!" + bcolors.ENDC)
 
-print (bcolors.OKBLUE + "Inital Pull" + bcolors.ENDC)
-os.system("git pull")
+# print (bcolors.OKBLUE + "Inital Pull" + bcolors.ENDC)
+# os.system("git pull")
 # print (bcolors.OKBLUE + "Checking Difference on Front end excluding following files from difference: ['.ts','.md','.json','.yml','LICENSE','.npmignore','.eslintrc','.js']" + bcolors.ENDC)
 # directory  = './01_Source/02_Web/Frontend'
 # md5hash    = dirhash(directory, 'md5',excluded_extensions=['.ts','.md','.json','.yml',"LICENSE",".npmignore",".eslintrc",".js"])
@@ -56,7 +56,7 @@ print (bcolors.OKBLUE + "Build Frontend" + bcolors.ENDC)
     # os.system("")
 os.system("cd Frontend && npm run build")
 os.system("cd ..")
-os.system("cd ..")
+
 
 
 print (bcolors.OKBLUE + "Adding new files" + bcolors.ENDC)
