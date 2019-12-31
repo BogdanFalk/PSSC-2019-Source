@@ -3,7 +3,7 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify';
 import "vuetify/dist/vuetify.min.css";
 import {router} from './router';
-import 'material-design-icons-iconfont/dist/material-design-icons.css'
+
 
 Vue.config.productionTip = false
 
