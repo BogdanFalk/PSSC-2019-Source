@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid  fill-height ma-0 pa-0 :style="{'background-image':'url('+require('../assets/main-bk2.jpg')+')'}" class="main-container-background" >
-    <v-row fluid align="start" justify="space-around"></v-row>
-    <v-row fluid align="center" justify="space-between" :no-gutters=positive>
+  <v-container fluid  fill-height ma-0 pa-0 >
+   
+    <v-row fluid pa-0 ma-0  justify="space-between" :no-gutters=positive>
       <v-col  cols="auto" >
         <v-card  class="">
           <v-navigation-drawer permanent>
@@ -81,13 +81,7 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css?family=Satisfy&display=swap');
 
-.main-container-background{
-   
-    background-size:cover;
-    background-position-y: -120px;
-    scroll-behavior: smooth;
-    
-}
+
 
 .v-card-title-text{
   font-family: 'Satisfy', cursive;

@@ -86,5 +86,6 @@ while (g!="Y" or "N"):
                 subprocess.Popen(['xdg-open', url])
             except OSError:
                 print('Please open a browser on: ' + url)
+        break
     if(g=="N"):
         break
