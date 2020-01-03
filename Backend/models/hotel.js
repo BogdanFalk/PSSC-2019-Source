@@ -1,25 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('User', {
+    const Hotel = sequelize.define('Hotel', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
-      firstName: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      lastName: {
+      img: {
         type: DataTypes.STRING,
         allowNull: false
       },
-      username: {
+      phone: {
         type: DataTypes.STRING,
-        allowNull: false,
-        unique:true
+        allowNull: false
       },
-      password: {
-        type: DataTypes.STRING,
+      rating: {
+        type: DataTypes.FLOAT,
         allowNull: false
       },
       
@@ -36,11 +35,6 @@ module.exports = (sequelize, DataTypes) => {
     // //     foreignKey: 'candidateId'
     // //   });
     // };
-    User.associate = function(models) {
-      User.hasMany(models.favoriteHotel,{as:"favoriteHotels"})
-
-    };
-     
-    return User
+    return Hotel
   }
   

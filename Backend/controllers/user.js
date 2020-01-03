@@ -1,106 +1,81 @@
+let logging = require("../logging.js")
+
 const {
-    User
-  } = require('../models')
-  const Sequelize = require('sequelize')
-//   const bcrypt = require("bcrypt-nodejs");
+  User
+} = require('../models')
+const Sequelize = require('sequelize')
+var passwordHash = require('password-hash');
 
-  const login = async (req, res) => {
-    const {email, password} = req.body;
+const reg = async (req, res) => {
+  logging.LOG("New User Incomming!");
+  try {
+    const {
+      firstName,
+      lastName,
+      username,
+      password,
+    } = req.body;
+    logging.LOG("Creating User:"+username)
+    var hashPass = passwordHash.generate(password);
+    console.log(hashPass)
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      username,
+      "password": hashPass,
+    });
+    res.status(200).send("Registered successfully");
 
-    User.findOne({
-      where: {
-        email: email
-      },
-      attributes: [
-        "name",
-        "email",
-        "passHash",
-      ]
-
-    }).then(user => {
-       let flag = false;
-      console.log("USER", user);
-      if(user !== null){
-        flag = bcrypt.compareSync(password, user.passHash);
-      } 
-
-       if(flag){
-            res.status(200).send({id: user.id});
-       } else{
-            res.status(400).send("failed login");
-       }
+  } catch (err) {
+    res.status(400).json({
+      error: err
     });
   }
-  
-  const findUser = async (req, res) => {
-    User.findOne({
-      where: {
-        id: req.params.id
-      },
-      attributes: [
-        "name",
-      ]
-    }).then(user => {
-            res.status(200).send(user);
-    });
-  
-  }
-  
+}
 
-  
-  const reg = async (req, res) => {
-    try {
-        console.log(req.body);
-        const { 
-            firstName,
-            lastName,
-            email,
-            pwd,
-            cnp,
-            voted_events
-        } = req.body;
-        
-        const newUser = await User.create({
-            firstName,
-            lastName,
-            email,
-            pwd,
-            cnp,
-            voted_events
-           
-        });
-        res.status(200).send("register successful");
-        
-      } catch (err) {
-        res.status(400).json({
-          error: err
-        });
-      }
-       
-    
-  }
-  
- 
-  
-  module.exports = {
-    '/login': {
+const login = async (req, res) => {
+  const { username, password } = req.body;
 
-      post: {
-        action: login,
-        level: 'public'
-      }
+  const user = await User.findOne({
+    where: {
+      username: username,
     },
-    '/register': {
-      post: {
-        action: reg,
-        level: 'public'
-      },
-    },
-    '/profile/:id': {
-      get: {
-        action: findUser,
-        level: 'public'
-      }
+    attributes: [
+      "id",
+      "firstName",
+      "lastName",
+      "username",
+      "password"
+    ]
+
+  })
+  let flag = false;
+
+  if (user !== null) {
+    flag = await passwordHash.verify(password, user.password);
+  }
+
+  if (flag) {
+    res.status(200).send(user);
+  } else {
+    res.status(400).send("failed login");
+  }
+}
+
+
+
+module.exports = {
+  '/login': {
+    post: {
+      action: login,
+      level: 'public'
     }
+  },
+  '/register': {
+    post: {
+      action: reg,
+      level: 'public'
+    },
   }
-  
+
+}

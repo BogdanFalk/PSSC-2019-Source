@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@heroku-cli/color": "^1.1.14",
+    "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
@@ -17,7 +18,8 @@
     "mqtt": "^3.0.0",
     "mysql": "^2.17.1",
     "mysql2": "^2.0.2",
-    "nodemon": "^1.19.3",
+    "nodemon": "^1.19.4",
+    "password-hash": "^1.2.2",
     "path": "^0.12.7",
     "sequelize": "^5.21.2",
     "serve-static": "^1.14.1",
