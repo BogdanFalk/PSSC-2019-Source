@@ -9,7 +9,6 @@ const { sequelize } = require('./Backend/models')
 const config = require('./Backend/config/config.js')
 
 var logging = require(__dirname + "/Backend/logging.js")
-var serverAPIs = require(__dirname + "/Backend/serverAPIs.js")
 var serverMQTT = require(__dirname + "/Backend/herokuCloudMQTT.js")
 
 const PORT = config.port
@@ -47,9 +46,6 @@ logging.testLogging()
 serverMQTT.connect()
 
 app.use(express.json());
-// app.use(serveStatic(__dirname + "/Frontend/dist"));
+app.use(serveStatic(__dirname + "/Frontend/dist"));
+logging.LOG("servered fe")
 
-
-
-serverAPIs.getContacts(app)
-// serverDB.connectToDB()
