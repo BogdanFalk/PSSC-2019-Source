@@ -145,7 +145,7 @@ export default {
 
   methods: {
     addHotelToFavorites(id, name, img, phone, rating) {
-      axios.post("http://localhost:5000/api/favoriteHotel/insertHotel", {
+      axios.post("http://lhotels.herokuapp.com/api/favoriteHotel/insertHotel", {
         id:localStorage.getItem("id"),
         name,
         img,
@@ -164,7 +164,7 @@ export default {
 
     getAllHotels()
     {
-      axios.post("http://localhost:5000/api/hotel/getAllHotels")
+      axios.post("http://lhotels.herokuapp.com/api/hotel/getAllHotels")
       .then(
         response =>{
           this.hotels=response.data;
@@ -184,7 +184,7 @@ export default {
       }
       else
       {
-        axios.post("http://localhost:5000/api/hotel/getCityHotels",
+        axios.post("http://lhotels.herokuapp.com/api/hotel/getCityHotels",
         {
           city:this.citySelected
         })

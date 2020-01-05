@@ -270,7 +270,7 @@ export default {
     loginUser() {
       console.log("Logging User..");
       axios
-        .post("http://localhost:5000/api/user/login", {
+        .post("http://lhotels.herokuapp.com/api/user/login", {
           username: this.username,
           password: this.password
         })
@@ -295,7 +295,7 @@ export default {
     registerUser() {
       console.log("Register User..");
       axios
-        .post("http://localhost:5000/api/user/register", {
+        .post("http://lhotels.herokuapp.com/api/user/register", {
           firstName: this.registerFirstName,
           lastName: this.registerLastName,
           username: this.registerUsername,
@@ -327,7 +327,7 @@ export default {
     getAllFavoriteHotels() {
       console.log("Trying to get hotels for id:" + localStorage.getItem("id"));
       axios
-        .post("http://localhost:5000/api/favoriteHotel/getAllHotels", {
+        .post("http://lhotels.herokuapp.com/api/favoriteHotel/getAllHotels", {
           id: localStorage.getItem("id")
         })
         .then(
@@ -348,7 +348,7 @@ export default {
     deleteFavoriteHotel(id) {
       console.log("Trying to delte hotel with id:" + id);
       axios
-        .post("http://localhost:5000/api/favoriteHotel/deleteHotel", {
+        .post("http://lhotels.herokuapp.com/api/favoriteHotel/deleteHotel", {
           hotelId: id
         })
         .then(response => {
