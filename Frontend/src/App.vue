@@ -1,6 +1,6 @@
 <template>
   <div
-    :style="{'background-image':'url('+require('./assets/main-bk4.jpg')+')'}"
+    :style="{'background-image':'url('+require('./assets/main-bk5.jpg')+')'}"
     class="main-container-background"
   >
     <v-app id="inspire">
@@ -27,7 +27,7 @@
 
                 <v-row justify="center">
                   <v-col cols="10" sm="5">
-                    <v-text-field class="centered-input" v-model="password" placeholder="Password"></v-text-field>
+                    <v-text-field class="centered-input"  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"   :type="show1 ? 'text' : 'password'" @click:append="show1 = !show1" v-model="password" placeholder="Password"></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row justify="center">
@@ -48,32 +48,53 @@
 
                 <v-row justify="center">
                   <v-col cols="10" sm="5">
-                    <v-text-field class="centered-input" v-model="registerUsername" placeholder="Username"></v-text-field>
+                    <v-text-field
+                      class="centered-input"
+                      v-model="registerUsername"
+                      placeholder="Username"
+                    ></v-text-field>
                   </v-col>
                 </v-row>
 
                 <v-row justify="center">
                   <v-col cols="10" sm="5">
-                    <v-text-field class="centered-input" v-model="registerPassword" placeholder="Password"></v-text-field>
+                    <v-text-field
+                      class="centered-input"
+                      v-model="registerPassword"
+                      placeholder="Password"
+                      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"   :type="show1 ? 'text' : 'password'" @click:append="show1 = !show1"
+                    ></v-text-field>
                   </v-col>
-                </v-row> <v-row justify="center">
+                </v-row>
+                <v-row justify="center">
                   <v-col cols="10" sm="5">
-                    <v-text-field class="centered-input" v-model="registerFirstName" placeholder="First Name"></v-text-field>
+                    <v-text-field
+                      class="centered-input"
+                      v-model="registerFirstName"
+                      placeholder="First Name"
+                    ></v-text-field>
                   </v-col>
-                </v-row> <v-row justify="center">
+                </v-row>
+                <v-row justify="center">
                   <v-col cols="10" sm="5">
-                    <v-text-field class="centered-input" v-model="registerLastName" placeholder="Last Name"></v-text-field>
+                    <v-text-field
+                      class="centered-input"
+                      v-model="registerLastName"
+                      placeholder="Last Name"
+                    ></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row justify="center">
                   <v-btn v-on:click="registerUser" rounded>Register</v-btn>
-                 
                 </v-row>
-                 <v-row justify="center">
+                <v-row justify="center">
                   <h2 class="login-text-register-card">Already have an account?</h2>
-                  <v-btn style="margin-botton:10px" v-on:click="changeLoginRegisterCard" rounded>Log In</v-btn>
+                  <v-btn
+                    style="margin-botton:10px"
+                    v-on:click="changeLoginRegisterCard"
+                    rounded
+                  >Log In</v-btn>
                 </v-row>
-           
               </v-conatiner>
             </div>
           </transition>
@@ -105,6 +126,7 @@
             <v-row>
               <v-col>
                 <v-container>
+                  <h2 class="home-subtext-search">Favorite Hotels</h2>
                   <v-row>
                     <v-col v-for="index2 in (0,numberOfRowsInFavoriteHotels)" :key="index2">
                       <v-card
@@ -133,12 +155,7 @@
                         <v-divider style="background-color:black; height: 5px;"></v-divider>
                         <div style="background-color:#f7dbc1c0;">
                           <v-card-actions class="justify-space-between">
-                            <v-bottom-sheet
-                              class="bottom-sheet-hotel"
-                         
-                              inset
-                              max-width="35%"
-                            >
+                            <v-bottom-sheet class="bottom-sheet-hotel" inset max-width="35%">
                               <template v-slot:activator="{ on }">
                                 <v-btn text v-on="on">
                                   <v-icon size="18">mdi-phone</v-icon>Phone
@@ -146,7 +163,7 @@
                               </template>
                               <v-sheet class="text-center" height="100px">
                                 <div class="my-3 text-sub-hotel">{{hotels[index2-1].name}}</div>
-                              
+
                                 <div class="my-3 text-sub-hotel">{{hotels[index2-1].phone}}</div>
                               </v-sheet>
                             </v-bottom-sheet>
@@ -176,14 +193,16 @@
         </v-row>
         <v-row justify="center" pa-0 ma-0 fluid>
           <v-col align-self="center">
-            <h2 class="bar-title-text">LhotelS</h2>
+            <h2 class="bar-title-text" v-parallax="0.1">LhotelS</h2>
           </v-col>
         </v-row>
       </v-container>
-
       <v-content>
         <router-view></router-view>
       </v-content>
+      <v-snackbar v-model="snackbar" :timeout="timeout">
+        <h2 class="snackbar-text">{{snackbarText}}</h2>
+      </v-snackbar>
     </v-app>
   </div>
 </template>
@@ -192,25 +211,29 @@
 <script>
 /* eslint-disable no-alert, no-console, no-unused-vars */
 import axios from "axios";
-import { EventBus } from './event-bus.js';
+import { EventBus } from "./event-bus.js";
 
 export default {
   name: "App",
   data() {
     return {
+      show1:false,
       overlay: false,
       isLogged: false,
       tryingToLogIn: true,
       tryingToRegister: false,
       username: "",
       password: "",
-      registerUsername:"",
-      registerPassword:"",
-      registerFirstName:"",
-      registerLastName:"",
-      surname:"",
-      name:"",
-   
+      registerUsername: "",
+      registerPassword: "",
+      registerFirstName: "",
+      registerLastName: "",
+      surname: "",
+      timeout: 2000,
+      snackbar: false,
+      snackbarText: "",
+      name: "",
+
       items: [
         { title: "Dashboard", icon: "mdi-view-dashboard" },
         { title: "Account", icon: " mdi-account-box" },
@@ -220,7 +243,6 @@ export default {
     };
   },
   methods: {
-   
     switchOverlay() {
       this.overlay = true;
       //  console.log((Math.trunc(this.hotels.length/3)));
@@ -254,14 +276,19 @@ export default {
         })
         .then(
           response => {
-            localStorage.setItem("id",response.data.id);
-            this.name=response.data.firstName;
-            this.surname=response.data.lastName;
-            this.isLogged=true;
+            localStorage.setItem("id", response.data.id);
+            this.name = response.data.firstName;
+            this.surname = response.data.lastName;
+            this.isLogged = true;
             this.getAllFavoriteHotels();
+            this.$root.$emit("userLogged", true);
+            this.snackbar = true;
+            this.snackbarText = "Login Successfully!";
           },
           error => {
             console.log(error);
+            this.snackbar = true;
+            this.snackbarText = "Login Failed!";
           }
         );
     },
@@ -279,45 +306,55 @@ export default {
             console.log(response.data);
             this.hotels = response.data;
 
-            this.tryingToLogIn=!this.tryingToLogIn;
-
+            this.tryingToLogIn = !this.tryingToLogIn;
+            this.snackbar = true;
+            this.snackbarText = "Register Successfully!";
+          },
+          error => {
+            console.log(error);
+            this.snackbar = true;
+            this.snackbarText = "Register Failed!";
+          }
+        );
+    },
+    logOffUser() {
+      localStorage.clear();
+      this.$root.$emit("userLogged", false);
+      this.isLogged = false;
+      this.snackbar = true;
+      this.snackbarText = "Logged Off!";
+    },
+    getAllFavoriteHotels() {
+      console.log("Trying to get hotels for id:" + localStorage.getItem("id"));
+      axios
+        .post("http://localhost:5000/api/favoriteHotel/getAllHotels", {
+          id: localStorage.getItem("id")
+        })
+        .then(
+          response => {
+            console.log(
+              "This are the hotels:" +
+                JSON.stringify(response.data.favoriteHotels)
+            );
+            console.log(this.hotels);
+            this.hotels = response.data.favoriteHotels;
+            console.log(this.hotels);
           },
           error => {
             console.log(error);
           }
         );
     },
-    logOffUser(){
-      localStorage.clear();
-      this.isLogged=false;
-    },
-    getAllFavoriteHotels() {
-      console.log("Trying to get hotels for id:"+localStorage.getItem('id'));
-      axios.post("http://localhost:5000/api/favoriteHotel/getAllHotels",{
-        id:localStorage.getItem('id')
-      }).then(
-        response => {
-          console.log("This are the hotels:"+JSON.stringify(response.data.favoriteHotels));
-          console.log(this.hotels)
-          this.hotels = response.data.favoriteHotels;
-          console.log(this.hotels)
-        },
-        error => {
-          console.log(error);
-        }
-      );
-    },
-    deleteFavoriteHotel(id)
-    {
-      console.log("Trying to delte hotel with id:"+id);
-      axios.post("http://localhost:5000/api/favoriteHotel/deleteHotel",{
-        hotelId:id
-      }).then(
-        response=>{
+    deleteFavoriteHotel(id) {
+      console.log("Trying to delte hotel with id:" + id);
+      axios
+        .post("http://localhost:5000/api/favoriteHotel/deleteHotel", {
+          hotelId: id
+        })
+        .then(response => {
           console.log(response);
           this.getAllFavoriteHotels();
-        }
-      )
+        });
     }
   },
   computed: {
@@ -326,7 +363,12 @@ export default {
     }
   },
   mounted: function() {
-    // this.getAllHotels();
+    this.$root.$on("newFavorite", isTrue => {
+      console.log("Ain't nobody got time for that");
+      if (isTrue) {
+        this.getAllFavoriteHotels();
+      }
+    });
   }
 };
 </script>
@@ -370,6 +412,21 @@ export default {
   font-family: "Satisfy", cursive;
   color: #384857;
   font-size: 1.7rem;
+}
+
+.home-subtext-search {
+  font-family: "Satisfy", cursive;
+  color: #384857;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.snackbar-text {
+  font-family: "Satisfy", cursive;
+  color: #ff504a;
+  text-align: center;
+  width: 100%;
+  font-size: 1.5rem;
 }
 
 .hotels-text-title-card {

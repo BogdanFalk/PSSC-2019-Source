@@ -17,7 +17,6 @@ const reg = async (req, res) => {
     } = req.body;
     logging.LOG("Creating User:"+username)
     var hashPass = passwordHash.generate(password);
-    console.log(hashPass)
     const newUser = await User.create({
       firstName,
       lastName,
@@ -27,6 +26,7 @@ const reg = async (req, res) => {
     res.status(200).send("Registered successfully");
 
   } catch (err) {
+    logging.ERR("Creating User Failed")
     res.status(400).json({
       error: err
     });
@@ -35,7 +35,7 @@ const reg = async (req, res) => {
 
 const login = async (req, res) => {
   const { username, password } = req.body;
-
+try {
   const user = await User.findOne({
     where: {
       username: username,
@@ -60,6 +60,11 @@ const login = async (req, res) => {
   } else {
     res.status(400).send("failed login");
   }
+} catch (error) {
+  logging.ERR("Login User Failed")
+  res.status(400).send("failed login");
+}
+  
 }
 
 

@@ -12,6 +12,7 @@ const reg = async (req, res) => {
             name,
             img,
             phone,
+            city,
             rating,
         } = req.body;
         logging.LOG("Creating Hotel:" + name)
@@ -19,6 +20,7 @@ const reg = async (req, res) => {
             name,
             img,
             phone,
+            city,
             rating,
         });
         res.status(200).send("Hotel registered successfully");
@@ -30,13 +32,74 @@ const reg = async (req, res) => {
     }
 }
 
+// const regFromApp = async (newHotel) => {
+//     logging.LOG("New User Incomming!");
+//     try {
+//         const {
+//             name,
+//             img,
+//             phone,
+//             rating,
+//         } = newHotel;
+//         logging.LOG("Creating Hotel:" + name)
+//         const newUser = await Hotel.create({
+//             name,
+//             img,
+//             phone,
+//             rating:parseFloat(rating),
+//         });
+
+
+//     } catch (err) {
+//         logging.LOG(err);
+//     }
+// }
+
+async function regFromApp(newHotel) {
+    logging.LOG("New Hotel Incomming!");
+    try {
+        const {
+            name,
+            img,
+            phone,
+            city,
+            rating,
+        } = newHotel;
+        logging.LOG("Creating Hotel:" + name)
+        const newUser = await Hotel.create({
+            name,
+            img,
+            city,
+            phone,
+            rating: parseFloat(rating),
+        });
+
+
+    } catch (err) {
+        logging.LOG(err);
+    }
+}
+
 const getAllHotels = async (req, res) => {
     const hotels = await Hotel.findAll({
-        attributes: { exclude: ['createdAt','updatedAt'] }
+        attributes: { exclude: ['createdAt', 'updatedAt'] }
     })
     res.status(200).send(hotels);
 }
 
+const getCityHotels = async (req, res) => {
+    const { city } = req.body;
+    const hotels = await Hotel.findAll({
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        where:{
+            city
+        }
+    })
+    res.status(200).send(hotels);
+  
+
+
+}
 
 module.exports = {
 
@@ -52,5 +115,13 @@ module.exports = {
             level: 'public'
         }
 
-    }
+    },
+    '/getCityHotels':
+    {
+        post: {
+            action: getCityHotels,
+            level: 'public'
+        }
+    },
+    regFromApp: regFromApp
 }

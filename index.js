@@ -32,7 +32,7 @@ Lumie.load(app, {
 })
 
 
-sequelize.sync({ force: false, logging: true }) // { force: true } - To reset DB insert this inside the parenthesis
+sequelize.sync({ force: false, logging: false }) // { force: true } - To reset DB insert this inside the parenthesis
   .then(() => {
     app.listen(process.env.PORT || 5000, () => {
       logging.LOG(__filename, 39, `Server listening on port ${PORT}`)
@@ -49,3 +49,4 @@ app.use(express.json());
 app.use(serveStatic(__dirname + "/Frontend/dist"));
 logging.LOG("servered fe")
 
+module.exports = app;

@@ -1,6 +1,7 @@
 var mqtt = require('mqtt')
 var url = require('url')
 let logging = require(__dirname+"/logging.js")
+let HotelController = require(__dirname+"/controllers/hotel.js");
 
 
 var mqtt_url = url.parse("mqtt://giruzqus:0WSzZTInshqj@farmer.cloudmqtt.com:10472");
@@ -21,6 +22,7 @@ function connect() {
       logging.LOG("Listening to Server MQTT api/mqtt/test")
       client.on('message', function(topic, message, packet) {
         logging.LOG("Received '" + logging.textColor.Blue +message + logging.textColor.Green+ "' on '" + topic + "'");
+        HotelController.regFromApp(JSON.parse(message));
       });
     });
   

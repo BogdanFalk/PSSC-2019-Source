@@ -15,6 +15,7 @@
               max-height="184px"
               max-width="920px"
               contain
+              v-parallax="0.1" 
             ></v-img>
           </v-col>
         </v-row>
@@ -29,6 +30,7 @@
           <v-col id="autoCompleteCity" cols="auto" class="ma-5">
             <h2 class="home-subtext-search">Search for a city</h2>
             <v-select
+              v-model="citySelected"
               spellcheck="false"
               dark
               dense
@@ -37,14 +39,16 @@
               rounded
               :menu-props="{ auto: true, overflowY: true }"
               background-color="#384857B3"
+              color="black"
             ></v-select>
             <center>
               <v-btn large rounded elevation="6">
-                <h2 class="btn-text-search">Search!</h2>
+                <h2 v-on:click="getCityHotels" class="btn-text-search">Search!</h2>
               </v-btn>
             </center>
           </v-col>
         </v-row>
+        <v-lazy>
         <v-row fluid align="center" justify="center">
           <v-col cols="auto" v-for="index3 in (0,numberOfRowsInFavoriteHotels)" :key="index3">
             <v-card
@@ -84,7 +88,11 @@
                       <div class="my-3 text-sub-hotel">{{hotels[index3-1].phone}}</div>
                     </v-sheet>
                   </v-bottom-sheet>
-                  <v-btn text>
+                  <v-btn
+                    v-show="isLogged"
+                    v-on:click="addHotelToFavorites(hotels[index3-1].id,hotels[index3-1].name,hotels[index3-1].img,hotels[index3-1].phone,hotels[index3-1].rating)"
+                    text
+                  >
                     <v-icon size="18">mdi-plus-box</v-icon>Favorite
                   </v-btn>
                 </v-card-actions>
@@ -92,6 +100,7 @@
             </v-card>
           </v-col>
         </v-row>
+        </v-lazy>
       </v-container>
     </v-lazy>
   </div>
@@ -99,7 +108,7 @@
 
 <script>
 /* eslint-disable no-alert, no-console, no-unused-vars */
-
+import axios from "axios";
 export default {
   data() {
     return {
@@ -111,128 +120,107 @@ export default {
       ],
       alignments: ["start", "center", "end"],
       searchInput: null,
-      isLogged:false,
+      isLogged: false,
       cities: [
+        "All",
         "Bacau",
         "Braila",
         "Brasov",
-        "Bucureşti",
+        "Bucuresti",
         "Cluj-Napoca",
         "Constanta",
         "Craiova",
         "Deva",
         "Galati",
         "Hunedoara",
-        "Iaşi",
+        "Iasi",
         "Oradea",
-        "Ploieşti",
-        "Timișoara"
+        "Ploiesti",
+        "Timisoara"
       ],
-      hotels: [
-        {
-          name: "Glorious Arc Motel",
-          img:
-            "https://q-cf.bstatic.com/xdata/images/hotel/270x200/11744066.jpg",
-          phone: "074223231",
-          rating: 3.5
-        },
-        {
-          name: "Serene Forest Motel",
-          img:
-            "https://content.r9cdn.net/rimg/himg/94/20/c9/sembo-510125-72ac8c06_b.jpg_resizeMode=FitInside_formatSettings=jpeg(quality-90)-957820.jpg",
-          phone: "074214112312231",
-          rating: 4
-        },
-        {
-          name: "Gentle Trinket Hotel",
-          img:
-            "https://media-cdn.tripadvisor.com/media/photo-s/18/5d/48/0d/villa-santushti.jpg",
-          phone: "07421412323231",
-          rating: 5
-        },
-        {
-          name: "Azure Keep Hotel",
-          img:
-            "http://www.pethotelscanada.com/wp-content/uploads/2017/08/amazing-hotel-sapa.jpg",
-          phone: "07421423121231",
-          rating: 3
-        },
-        {
-          name: "Crown House Resort",
-          img:
-            "https://s-ec.bstatic.com/images/hotel/max1024x768/165/165397143.jpg",
-          phone: "074214232131231",
-          rating: 5
-        },
-        {
-          name: "Fairyland Resort",
-          img:
-            "http://static.asiawebdirect.com/m/phuket/hotels/kosamui-com/fairyland-club-resort/hotelBanner/home.jpg",
-          phone: "074221312141231",
-          rating: 3
-        },
-        {
-          name: "Citadel Hotel",
-          img:
-            "https://pix10.agoda.net/hotelImages/186634/-1/12b76f2822bf0d3e066d0fc7464a0998.jpg",
-          phone: "07421321341231",
-          rating: 4.5
-        },
-        {
-          name: "Stellar Hotel",
-          img:
-            "https://r-cf.bstatic.com/images/hotel/max1024x768/235/235505369.jpg",
-          phone: "07421412311231",
-          rating: 3
-        },
-        {
-          name: "Recreation Hotel",
-          img:
-            "https://r-cf.bstatic.com/images/hotel/max1024x768/214/214765691.jpg",
-          phone: "074214123121231",
-          rating: 3.5
-        },
-        {
-          name: "Snowy Pier Resort",
-          img:
-            "https://odis.homeaway.com/odis/listing/397e4884-a049-4b0e-9fad-09a6d65e5e05.f6.jpg",
-          phone: "074212331141231",
-          rating: 5
-        },
-        {
-          name: "Twin Tide Motel",
-          img:
-            "https://pix10.agoda.net/hotelImages/117/1177511/1177511_16041910260041605164.jpg",
-          phone: "0742112341231",
-          rating: 4.5
-        },
-        {
-          name: "Muse Resort",
-          img: "https://www.muse-hotels.com/images/home-ourStory.jpg",
-          phone: "0742141231",
-          rating: 4
-        },
-        {
-          name: "Spring Dream Motel",
-          img:
-            "https://pix6.agoda.net/hotelImages/5068840/-1/7836ebca77dca47925c31ba85e0d6276.jpg",
-          phone: "07421432231231",
-          rating: 5
-        }
-      ]
+      hotels: [],
+      citySelected:"All"
     };
   },
 
-  methods: {},
+  methods: {
+    addHotelToFavorites(id, name, img, phone, rating) {
+      axios.post("http://localhost:5000/api/favoriteHotel/insertHotel", {
+        id:localStorage.getItem("id"),
+        name,
+        img,
+        phone,
+        rating
+      }) .then(
+          response => {
+            console.log(response.body);
+             this.$root.$emit('newFavorite',"true");
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    },
+
+    getAllHotels()
+    {
+      axios.post("http://localhost:5000/api/hotel/getAllHotels")
+      .then(
+        response =>{
+          this.hotels=response.data;
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    },
+
+    getCityHotels()
+    {
+      console.log(this.citySelected);
+      if(this.citySelected==="All")
+      {
+        this.getAllHotels()
+      }
+      else
+      {
+        axios.post("http://localhost:5000/api/hotel/getCityHotels",
+        {
+          city:this.citySelected
+        })
+         .then(
+        response =>{
+          this.hotels=response.data;
+        },
+        error => {
+          console.log(error);
+        }
+      )
+      }
+    }
+  },
 
   computed: {
     numberOfRowsInFavoriteHotels() {
       return Math.trunc(this.hotels.length);
+    },
+    isLoggedComputed() {
+      return this.isLogged;
     }
+  },
+
+  mounted: function() {
+    this.$root.$on("userLogged", isLogged => {
+      console.log("Ain't nobody got time for that");
+      this.isLogged = isLogged;
+      
+    });
+  },
+
+  created: function(){
+    this.getAllHotels();
   }
 };
-
-
 </script>
 
 <style>
@@ -291,7 +279,7 @@ export default {
 }
 
 .v-list-item__title {
-  color: white !important;
+  color: #384857 !important;
   text-align: center;
   font-size: 1rem !important;
   font-family: "Courgette", cursive;
